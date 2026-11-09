@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+/*
+ * AURFIN — design tokens.
+ * Palette ufficiale: #142D40 blu notte · #176B68 verde petrolio · #F7F5F0 avorio
+ * · #B69A65 ottone · #475569 ardesia. Le varianti derivano da questi valori.
+ */
+@theme {
+  --color-navy-950: #0c1e2c;
+  --color-navy-900: #142d40;
+  --color-navy-800: #1c3a52;
+  --color-navy-700: #2b4c66;
+  --color-navy-200: #c9d3dc;
+  --color-navy-100: #e2e8ee;
+  --color-navy-50: #eff3f6;
+
+  --color-teal-800: #10504e;
+  --color-teal-700: #176b68;
+  --color-teal-100: #d6e7e5;
+  --color-teal-50: #ebf3f2;
+
+  --color-ivory: #f7f5f0;
+  --color-paper: #fbfaf7;
+  --color-brass: #b69a65;
+  --color-brass-700: #7a6236;
+  --color-brass-100: #efe7d8;
+
+  --color-slate: #475569;
+  --color-line: #e4dfd3;
+  --color-line-strong: #cbc3b2;
+
+  --color-danger: #9f2d1c;
+  --color-danger-50: #fbefec;
+  --color-warning-50: #fbf5e8;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
+  --font-brand: var(--font-montserrat), var(--font-inter), sans-serif;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+
+  --shadow-soft: 0 1px 2px rgb(20 45 64 / 0.04), 0 6px 20px -8px rgb(20 45 64 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(20 45 64 / 0.05), 0 18px 40px -16px rgb(20 45 64 / 0.22);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-fade-up: fade-up 0.6s var(--ease-out-soft) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-navy-900);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-teal-100);
+    color: var(--color-navy-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-teal-700);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Testo editoriale lungo (guide, pagine legali) */
+  .prose-aurfin {
+    max-width: 68ch;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-navy-900);
+  }
+  .prose-aurfin > * + * {
+    margin-top: 1.1em;
+  }
+  .prose-aurfin h2 {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    line-height: 1.25;
+    margin-top: 2.2em;
+    letter-spacing: -0.01em;
+  }
+  .prose-aurfin h3 {
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin-top: 1.8em;
+  }
+  .prose-aurfin ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+  .prose-aurfin ol {
+    list-style: decimal;
+    padding-left: 1.25rem;
+  }
+  .prose-aurfin li + li {
+    margin-top: 0.4em;
+  }
+  .prose-aurfin a {
+    color: var(--color-teal-700);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Cursore range coerente con il brand */
+  .range-aurfin {
+    appearance: none;
+    width: 100%;
+    height: 2.75rem;
+    background: transparent;
+    cursor: pointer;
+  }
+  .range-aurfin::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      var(--color-navy-900) var(--fill, 50%),
+      var(--color-line-strong) var(--fill, 50%)
+    );
+  }
+  .range-aurfin::-moz-range-track {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--color-line-strong);
+  }
+  .range-aurfin::-moz-range-progress {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--color-navy-900);
+  }
+  .range-aurfin::-webkit-slider-thumb {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    margin-top: -10px;
+    border-radius: 999px;
+    background: var(--color-paper);
+    border: 2px solid var(--color-navy-900);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.15s var(--ease-out-soft);
+  }
+  .range-aurfin::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: var(--color-paper);
+    border: 2px solid var(--color-navy-900);
+  }
+  .range-aurfin:active::-webkit-slider-thumb {
+    transform: scale(1.1);
+  }
+  .range-aurfin:focus-visible {
+    outline-offset: 0;
+  }
+}
