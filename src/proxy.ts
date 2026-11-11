@@ -45,7 +45,8 @@ export function proxy(request: NextRequest) {
 
   if (accessKey && accessKey.length >= 16) {
     const expected = digest(accessKey);
-    const fromLink = searchParams.get(ACCESS_PARAM);
+    // Un "+" della chiave non codificato nel link arriva come spazio: lo si ripristina.
+    const fromLink = searchParams.get(ACCESS_PARAM)?.replace(/ /g, "+") ?? null;
 
     if (fromLink !== null) {
       // Link di accesso: imposta il cookie e ripulisce l'indirizzo dalla chiave.

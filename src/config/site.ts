@@ -58,7 +58,8 @@ export type SiteConfig = {
 
 export const site: SiteConfig = {
   name: "AURFIN",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  // Su Render, senza indirizzo impostato, vale quello assegnato da Render al servizio.
+  url: process.env.NEXT_PUBLIC_SITE_URL || process.env.RENDER_EXTERNAL_URL || "http://localhost:3000",
   tagline: "Intermediazione del credito per la persona",
   description:
     "AURFIN accompagna chi valuta una cessione del quinto, un prestito per delega o un prestito personale: ascolta l'esigenza, chiarisce le opzioni e segue la richiesta passo dopo passo.",

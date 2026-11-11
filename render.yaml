@@ -1,0 +1,25 @@
+# Versione di prova su Render (Blueprint): dati dimostrativi, accesso solo con il link privato.
+# Le chiavi segrete le genera Render: non vanno scritte qui né altrove.
+services:
+  - type: web
+    name: aurfin-prova
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/salute
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: DATA_MODE
+        value: demo
+      - key: NEXT_PUBLIC_REVIEW_MODE
+        value: "true"
+      - key: STORAGE_DRIVER
+        value: local
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: SITE_ACCESS_KEY
+        generateValue: true
