@@ -131,6 +131,36 @@ test("l'iscrizione OAM compare nel footer e nelle pagine informative", async () 
   }
 });
 
+test("con la chiave di accesso il sito è chiuso, ma il controllo di salute risponde", async () => {
+  const PORT2 = 3197;
+  const key = "chiave+di/prova=lunga-abbastanza";
+  const gated = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "-p", String(PORT2)], {
+    env: { ...serverEnv(), SITE_ACCESS_KEY: key, DATABASE_PATH: path.join(tmp, "gated.db") },
+    stdio: "ignore",
+  });
+  try {
+    const base = `http://localhost:${PORT2}`;
+    let health;
+    for (let i = 0; i < 100; i++) {
+      try {
+        health = await fetch(`${base}/api/salute`);
+        break;
+      } catch {
+        await sleep(200);
+      }
+    }
+    assert.equal(health.status, 200, "salute");
+    assert.equal((await fetch(`${base}/`)).status, 401, "senza chiave");
+    assert.equal((await fetch(`${base}/api/richieste`, { method: "POST" })).status, 401, "API senza chiave");
+    // Il "+" non codificato nel link arriva come spazio: la chiave deve valere lo stesso.
+    const entry = await fetch(`${base}/?accesso=${key}`, { redirect: "manual" });
+    assert.equal(entry.status, 307, "link con la chiave");
+    assert.match(entry.headers.get("set-cookie") ?? "", /aurfin_accesso=/);
+  } finally {
+    gated.kill();
+  }
+});
+
 test("il sito clienti non fa riferimento allo spazio team e in live non ci sono profili demo", async () => {
   for (const p of ["/", "/area-clienti/accesso", "/sitemap.xml", "/robots.txt"]) {
     assert.doesNotMatch(await (await fetch(BASE + p)).text(), /\/team/, p);
