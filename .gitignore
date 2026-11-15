@@ -46,3 +46,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# materiale interno (presentazioni, PDF): non va su GitHub
+/materiale

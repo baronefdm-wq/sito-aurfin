@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 const journey = [
   { title: "Richiesta", text: "Ci lasci i dati essenziali e, se vuoi, alleghi già i documenti." },
-  { title: "Confronto con un consulente", text: "Analizziamo insieme esigenza, opzioni e sostenibilità." },
+  { title: "Preventivo via email", text: "Entro un giorno lavorativo; se hai dubbi, prenoti una telefonata dal link nell'email." },
   { title: "Valutazione della documentazione", text: "Se decidi di procedere, prepariamo una richiesta completa." },
   { title: "Eventuale proposta", text: "Il finanziatore decide; tu valuti la proposta con calma." },
 ];
