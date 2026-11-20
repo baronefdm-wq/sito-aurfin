@@ -161,6 +161,18 @@ test("con la chiave di accesso il sito è chiuso, ma il controllo di salute risp
   }
 });
 
+test("il profilo Instagram è collegato nel footer, nei contatti e nei dati per i motori di ricerca", async () => {
+  const profile = "https://www.instagram.com/aurorafinance__/";
+  for (const p of ["/", "/contatti"]) {
+    const html = await (await fetch(BASE + p)).text();
+    const link = html.match(new RegExp(`<a[^>]+href="${profile.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")}"[^>]*>`))?.[0];
+    assert.ok(link, `link Instagram in ${p}`);
+    assert.match(link, /rel="[^"]*noopener[^"]*"/, "rel noopener");
+  }
+  const home = await (await fetch(`${BASE}/`)).text();
+  assert.match(home, /"sameAs":\["https:\/\/www\.instagram\.com\/aurorafinance__\/"\]/);
+});
+
 test("il sito clienti non fa riferimento allo spazio team e in live non ci sono profili demo", async () => {
   for (const p of ["/", "/area-clienti/accesso", "/sitemap.xml", "/robots.txt"]) {
     assert.doesNotMatch(await (await fetch(BASE + p)).text(), /\/team/, p);

@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/content/blocks";
 import { Placeholder } from "@/components/content/review";
 import { Button } from "@/components/ui/button";
 import { Container, Section } from "@/components/ui/primitives";
-import { site } from "@/config/site";
+import { profileHandle, site } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Contatti",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  const { email } = site.contacts;
+  const { email, instagram } = site.contacts;
   return (
     <>
       <PageHeader
@@ -37,6 +37,20 @@ export default function ContactPage() {
                 <Placeholder>Email per il pubblico da inserire</Placeholder>
               )}
             </p>
+            {instagram ? (
+              <p className="mt-4 border-t border-line pt-4 text-slate">
+                Seguici anche su{" "}
+                <a
+                  href={instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-navy-900 underline-offset-2 hover:text-teal-700 hover:underline"
+                >
+                  Instagram {profileHandle(instagram)}
+                  <span className="sr-only"> (sito esterno, nuova scheda)</span>
+                </a>
+              </p>
+            ) : null}
           </div>
           <div className="rounded-lg bg-navy-900 p-6 text-ivory sm:p-8">
             <h2 className="font-serif text-2xl">Vuoi un preventivo?</h2>

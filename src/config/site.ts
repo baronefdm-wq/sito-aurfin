@@ -46,6 +46,8 @@ export type SiteConfig = {
     whatsapp: string | null;
     /** Link a una mappa esterna, solo per una sede reale. */
     mapUrl: string | null;
+    /** Profilo Instagram ufficiale (indirizzo completo). */
+    instagram: string | null;
   };
   complaints: { email: string | null; pec: string | null; address: string | null };
   team: TeamMember[];
@@ -91,6 +93,7 @@ export const site: SiteConfig = {
     hours: null,
     whatsapp: null,
     mapUrl: null,
+    instagram: "https://www.instagram.com/aurorafinance__/",
   },
   complaints: { email: null, pec: null, address: null },
   team: [],
@@ -138,6 +141,12 @@ export const publicationBlockers: string[] = [
   "Indicare gli intermediari mandanti per conto dei quali AURFIN opera, come richiesto per gli agenti in attività finanziaria.",
   "Verificare che info@aurfin.it riceva posta e sia letta ogni giorno lavorativo: è l'unico recapito sul sito e riceve le risposte dei clienti ai preventivi.",
 ];
+
+/** Nome utente leggibile da un indirizzo di profilo, es. "@aurorafinance__". */
+export function profileHandle(url: string) {
+  const handle = new URL(url).pathname.split("/").filter(Boolean)[0];
+  return handle ? `@${handle}` : url;
+}
 
 export function hasCompanyIdentity(config: SiteConfig = site) {
   return Boolean(config.company.legalName && config.company.vatNumber);

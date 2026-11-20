@@ -3,7 +3,7 @@ import { Logo } from "@/components/brand/logo";
 import { Placeholder } from "@/components/content/review";
 import { Container } from "@/components/ui/primitives";
 import { legalNav, mainNav, solutions } from "@/config/navigation";
-import { site } from "@/config/site";
+import { profileHandle, site } from "@/config/site";
 
 function FooterList({ title, items }: { title: string; items: { href: string; label: string }[] }) {
   return (
@@ -52,6 +52,17 @@ export function SiteFooter() {
               ) : (
                 <Placeholder className="border-brass/60 bg-transparent text-brass">Email da inserire</Placeholder>
               )}
+              {contacts.instagram ? (
+                <div>
+                  <dt className="sr-only">Instagram</dt>
+                  <dd>
+                    <a href={contacts.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-white">
+                      Instagram {profileHandle(contacts.instagram)}
+                      <span className="sr-only"> (sito esterno, nuova scheda)</span>
+                    </a>
+                  </dd>
+                </div>
+              ) : null}
             </dl>
           </div>
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">

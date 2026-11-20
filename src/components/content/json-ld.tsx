@@ -17,6 +17,7 @@ export function OrganizationJsonLd() {
     ...(contacts.phone ? { telephone: contacts.phone } : {}),
     ...(contacts.email ? { email: contacts.email } : {}),
     address: contacts.address ?? company.registeredOffice,
+    ...(contacts.instagram ? { sameAs: [contacts.instagram] } : {}),
   };
   return (
     <script
