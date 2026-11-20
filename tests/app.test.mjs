@@ -173,6 +173,27 @@ test("il profilo Instagram è collegato nel footer, nei contatti e nei dati per 
   assert.match(home, /"sameAs":\["https:\/\/www\.instagram\.com\/aurorafinance__\/"\]/);
 });
 
+test("una chiave di accesso corta tiene comunque chiuso il sito", async () => {
+  const PORT3 = 3194;
+  const gated = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "-p", String(PORT3)], {
+    env: { ...serverEnv(), SITE_ACCESS_KEY: "corta", DATABASE_PATH: path.join(tmp, "corta.db") },
+    stdio: "ignore",
+  });
+  try {
+    const base = `http://localhost:${PORT3}`;
+    for (let i = 0; i < 100; i++) {
+      try {
+        if ((await fetch(`${base}/api/salute`)).ok) break;
+      } catch {}
+      await sleep(200);
+    }
+    for (const p of ["/", "/contatti", "/team/accesso"]) assert.equal((await fetch(base + p)).status, 401, p);
+    assert.equal((await fetch(`${base}/?accesso=corta`, { redirect: "manual" })).status, 307, "la chiave corta apre comunque il sito");
+  } finally {
+    gated.kill();
+  }
+});
+
 test("il sito clienti non fa riferimento allo spazio team e in live non ci sono profili demo", async () => {
   for (const p of ["/", "/area-clienti/accesso", "/sitemap.xml", "/robots.txt"]) {
     assert.doesNotMatch(await (await fetch(BASE + p)).text(), /\/team/, p);

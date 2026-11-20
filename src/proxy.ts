@@ -43,8 +43,9 @@ export function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
   const accessKey = process.env.SITE_ACCESS_KEY?.trim();
 
+  // Qualsiasi chiave impostata chiude il sito: una chiave corta è debole, ma non deve mai aprirlo.
   // Il controllo di salute (solo "ok"/"errore", nessun dato) resta raggiungibile dal servizio di hosting.
-  if (accessKey && accessKey.length >= 16 && pathname !== "/api/salute") {
+  if (accessKey && pathname !== "/api/salute") {
     const expected = digest(accessKey);
     // Un "+" della chiave non codificato nel link arriva come spazio: lo si ripristina.
     const fromLink = searchParams.get(ACCESS_PARAM)?.replace(/ /g, "+") ?? null;
